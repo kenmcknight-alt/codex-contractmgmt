@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="card">
+    <div class="flex-between">
+      <div>
+        <h2>Contract Portfolio</h2>
+        <p class="footer-note">Track ownership, renewals, AI extraction status, and audit readiness in one place.</p>
+      </div>
+      <div class="actions">
+        <a class="button" href="{{ url_for('contract_new') }}">Add Contract</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Lifecycle Summary</h3>
+    <div class="flex">
+      {% for stat in stats %}
+        <span class="badge">{{ stat['state'] }}: {{ stat['total'] }}</span>
+      {% else %}
+        <span class="footer-note">No contracts yet.</span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Active Contracts</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Contract</th>
+          <th>Vendor</th>
+          <th>Owner</th>
+          <th>State</th>
+          <th>Renewal Intent</th>
+          <th>Notice Period</th>
+          <th>Updated</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for contract in contracts %}
+          <tr>
+            <td>{{ contract['title'] }}</td>
+            <td>{{ contract['vendor_name'] or 'Unassigned' }}</td>
+            <td>{{ contract['owner'] }}</td>
+            <td><span class="badge">{{ contract['state'] }}</span></td>
+            <td>{{ contract['renewal_intent'] or 'Not set' }}</td>
+            <td>{{ contract['notice_period_days'] or '—' }}</td>
+            <td>{{ contract['updated_at'] }}</td>
+            <td>
+              <div class="actions">
+                <a class="button ghost" href="{{ url_for('contract_detail', contract_id=contract['id']) }}">View</a>
+                <a class="button secondary" href="{{ url_for('contract_edit', contract_id=contract['id']) }}">Edit</a>
+              </div>
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="8">No contracts created yet.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

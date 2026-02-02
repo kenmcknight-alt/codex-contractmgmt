@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="card">
+    <h2>Upload Document for {{ contract['title'] }}</h2>
+    <form method="post" enctype="multipart/form-data">
+      <label for="document">Document File</label>
+      <input id="document" name="document" type="file" required />
+
+      <label for="actor">Actor (for audit trail)</label>
+      <input id="actor" name="actor" placeholder="e.g., Jamie Lee" />
+
+      <div class="actions">
+        <button type="submit">Upload</button>
+        <a class="button ghost" href="{{ url_for('contract_detail', contract_id=contract['id']) }}">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

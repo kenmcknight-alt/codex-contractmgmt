@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="card">
+    <h2>{{ title }}</h2>
+    <form method="post">
+      <label for="title">Contract Title</label>
+      <input id="title" name="title" value="{{ contract['title'] if contract else '' }}" required />
+
+      <label for="vendor_id">Vendor</label>
+      <select id="vendor_id" name="vendor_id">
+        <option value="">Unassigned</option>
+        {% for vendor in vendors %}
+          <option value="{{ vendor['id'] }}" {% if contract and vendor['id'] == contract['vendor_id'] %}selected{% endif %}>
+            {{ vendor['name'] }}
+          </option>
+        {% endfor %}
+      </select>
+
+      <label for="owner">Contract Owner</label>
+      <input id="owner" name="owner" value="{{ contract['owner'] if contract else '' }}" required />
+
+      <label for="state">Lifecycle State</label>
+      <select id="state" name="state" required>
+        {% for state in states %}
+          <option value="{{ state }}" {% if contract and contract['state'] == state %}selected{% endif %}>{{ state }}</option>
+        {% endfor %}
+      </select>
+
+      <div class="flex">
+        <div style="flex: 1;">
+          <label for="effective_date">Effective Date</label>
+          <input id="effective_date" name="effective_date" type="date" value="{{ contract['effective_date'] if contract else '' }}" />
+        </div>
+        <div style="flex: 1;">
+          <label for="termination_date">Termination Date</label>
+          <input id="termination_date" name="termination_date" type="date" value="{{ contract['termination_date'] if contract else '' }}" />
+        </div>
+      </div>
+
+      <div class="flex">
+        <div style="flex: 1;">
+          <label for="notice_period_days">Notice Period (days)</label>
+          <input id="notice_period_days" name="notice_period_days" type="number" min="0" value="{{ contract['notice_period_days'] if contract else '' }}" />
+        </div>
+        <div style="flex: 2;">
+          <label for="renewal_intent">Renewal Intent</label>
+          <input id="renewal_intent" name="renewal_intent" value="{{ contract['renewal_intent'] if contract else '' }}" placeholder="Renew / Terminate / Review" />
+        </div>
+      </div>
+
+      <label for="tags">Tags (comma-separated)</label>
+      <input id="tags" name="tags" value="{{ tags }}" placeholder="e.g., SaaS, High Spend" />
+
+      <label>
+        <input type="checkbox" name="sensitive" {% if contract and contract['sensitive'] %}checked{% endif %} />
+        Mark as sensitive
+      </label>
+
+      <label for="actor">Actor (for audit trail)</label>
+      <input id="actor" name="actor" placeholder="e.g., Alex Kim" />
+
+      <div class="actions">
+        <button type="submit">Save</button>
+        <a class="button ghost" href="{{ url_for('index') }}">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

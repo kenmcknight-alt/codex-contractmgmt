@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="card">
+    <h2>Log AI Extraction for {{ contract['title'] }}</h2>
+    <form method="post">
+      <label for="extracted_fields">Extracted Fields</label>
+      <textarea id="extracted_fields" name="extracted_fields" required placeholder="List extracted values: key dates, pricing, renewal clauses, etc."></textarea>
+
+      <label for="status">Validation Status</label>
+      <select id="status" name="status" required>
+        <option value="Pending Validation">Pending Validation</option>
+        <option value="Validated">Validated</option>
+        <option value="Overridden">Overridden</option>
+      </select>
+
+      <label for="approver">Approver</label>
+      <input id="approver" name="approver" placeholder="Reviewer name" />
+
+      <label for="actor">Actor (for audit trail)</label>
+      <input id="actor" name="actor" placeholder="e.g., Taylor Chen" />
+
+      <div class="actions">
+        <button type="submit">Save</button>
+        <a class="button ghost" href="{{ url_for('contract_detail', contract_id=contract['id']) }}">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

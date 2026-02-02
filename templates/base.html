@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title or "Contract Management" }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <header>
+      <h1>Lightweight Contract Management</h1>
+      <nav>
+        <a href="{{ url_for('index') }}">Contracts</a>
+        <a href="{{ url_for('vendor_list') }}">Vendors</a>
+        <a href="{{ url_for('audit_log') }}">Audit Log</a>
+        <a class="button secondary" href="{{ url_for('contract_new') }}">New Contract</a>
+        <a class="button secondary" href="{{ url_for('vendor_new') }}">New Vendor</a>
+      </nav>
+    </header>
+    <main>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+            <div class="flash">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>

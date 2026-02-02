@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="card">
+    <div class="flex-between">
+      <div>
+        <h2>{{ contract['title'] }}</h2>
+        <p class="footer-note">Vendor: {{ contract['vendor_name'] or 'Unassigned' }} | Owner: {{ contract['owner'] }}</p>
+      </div>
+      <div class="actions">
+        <a class="button secondary" href="{{ url_for('contract_edit', contract_id=contract['id']) }}">Edit</a>
+        <a class="button" href="{{ url_for('document_new', contract_id=contract['id']) }}">Upload Document</a>
+        <a class="button ghost" href="{{ url_for('extraction_new', contract_id=contract['id']) }}">Log Extraction</a>
+      </div>
+    </div>
+    <div class="flex">
+      <span class="badge">{{ contract['state'] }}</span>
+      {% if contract['sensitive'] %}
+        <span class="badge">Sensitive</span>
+      {% endif %}
+    </div>
+    <p><strong>Effective:</strong> {{ contract['effective_date'] or '—' }} | <strong>Termination:</strong> {{ contract['termination_date'] or '—' }}</p>
+    <p><strong>Notice Period:</strong> {{ contract['notice_period_days'] or '—' }} days</p>
+    <p><strong>Renewal Intent:</strong> {{ contract['renewal_intent'] or 'Not set' }}</p>
+    <div>
+      {% for tag in tags %}
+        <span class="tag">{{ tag }}</span>
+      {% else %}
+        <span class="footer-note">No tags assigned.</span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="flex-between">
+      <h3>Documents</h3>
+      <a class="button secondary" href="{{ url_for('document_new', contract_id=contract['id']) }}">Add Version</a>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Filename</th>
+          <th>Version</th>
+          <th>Uploaded</th>
+          <th>SHA256</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for doc in documents %}
+          <tr>
+            <td>{{ doc['filename'] }}</td>
+            <td>v{{ doc['version'] }}</td>
+            <td>{{ doc['uploaded_at'] }}</td>
+            <td>{{ doc['sha256'] }}</td>
+            <td>
+              <a class="button ghost" href="{{ url_for('document_download', filename=doc['storage_path']) }}">Download</a>
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="5">No documents uploaded.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="flex-between">
+      <h3>AI Extraction Records</h3>
+      <a class="button secondary" href="{{ url_for('extraction_new', contract_id=contract['id']) }}">Log Extraction</a>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>Approver</th>
+          <th>Extracted Fields</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for extraction in extractions %}
+          <tr>
+            <td><span class="badge">{{ extraction['status'] }}</span></td>
+            <td>{{ extraction['approver'] or 'Pending' }}</td>
+            <td>{{ extraction['extracted_fields'] }}</td>
+            <td>{{ extraction['created_at'] }}</td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="4">No extraction records logged.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Audit Trail</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>Actor</th>
+          <th>Details</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for audit in audits %}
+          <tr>
+            <td>{{ audit['action'] }}</td>
+            <td>{{ audit['actor'] }}</td>
+            <td>{{ audit['details'] or '—' }}</td>
+            <td>{{ audit['created_at'] }}</td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="4">No audit events yet.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

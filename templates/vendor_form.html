@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="card">
+    <h2>{{ title }}</h2>
+    <form method="post">
+      <label for="name">Vendor Name</label>
+      <input id="name" name="name" value="{{ vendor['name'] if vendor else '' }}" required />
+
+      <label for="risk_profile">Risk Profile</label>
+      <input id="risk_profile" name="risk_profile" value="{{ vendor['risk_profile'] if vendor else '' }}" placeholder="Low / Medium / High" />
+
+      <label for="status">Status</label>
+      <input id="status" name="status" value="{{ vendor['status'] if vendor else '' }}" placeholder="Active / On Hold" />
+
+      <label for="actor">Actor (for audit trail)</label>
+      <input id="actor" name="actor" placeholder="e.g., Priya Singh" />
+
+      <div class="actions">
+        <button type="submit">Save</button>
+        <a class="button ghost" href="{{ url_for('vendor_list') }}">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

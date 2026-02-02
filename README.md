@@ -158,3 +158,21 @@ This document translates the provided business requirements into an enterprise-r
 
 ---
 This design maps directly to the provided business requirements while maintaining a lightweight, enterprise-ready footprint.
+
+## Quickstart (Local Demo)
+### 1) Install dependencies
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### 2) Run the application
+```bash
+python app.py
+```
+
+### 3) Explore the workflow
+- Add vendors, then create contracts tied to those vendors.
+- Upload document versions and log AI extraction records.
+- Review the audit log to validate governance coverage.
