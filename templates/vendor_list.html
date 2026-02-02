@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="card">
+    <div class="flex-between">
+      <div>
+        <h2>Vendors</h2>
+        <p class="footer-note">Centralize vendor profiles and track contract exposure.</p>
+      </div>
+      <a class="button" href="{{ url_for('vendor_new') }}">Add Vendor</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Risk Profile</th>
+          <th>Status</th>
+          <th>Created</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for vendor in vendors %}
+          <tr>
+            <td>{{ vendor['name'] }}</td>
+            <td>{{ vendor['risk_profile'] or 'Not set' }}</td>
+            <td>{{ vendor['status'] or 'Active' }}</td>
+            <td>{{ vendor['created_at'] }}</td>
+            <td>
+              <a class="button secondary" href="{{ url_for('vendor_edit', vendor_id=vendor['id']) }}">Edit</a>
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="5">No vendors added yet.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
